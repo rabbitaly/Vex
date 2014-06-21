@@ -63,7 +63,7 @@ void moveLiftAuto(int direction, int height)
 	if (direction == 1)
 	{
 		while (SensorValue[rightLiftS] > height)
-		{
+		{		
 			motor[leftArmTop] = 90;
 			motor[leftArmBottom] = 90;
 			motor[rightArmTop] = 90;
@@ -76,8 +76,7 @@ void moveLiftAuto(int direction, int height)
 	}
 	else if (direction == -1)
 	{
-		if (SensorValue[liftp] == 1) SensorValue[liftp] = 0;
-		while (SensorValue[lift] < height)
+		while (SensorValue[rightLiftS] < height)
 		{
 			motor[leftArmTop] = -90;
 			motor[leftArmBottom] = -90;
@@ -168,49 +167,309 @@ wait10Msec(100);
 }
 */
 
+void deploy()
+{
+	intake(-1);
+	wait10Msec(70);
+	intake(0);
+}
+
 void blueSkyriseAuton()
 {	
-	//Deploy
+	while (SensorValue[bumper] == 0) {}
+	deploy();
+	intake(1);
+	SensorValue[rightBackS] = 0;
+	while(abs(SensorValue[rightBackS]) < 200)
+	{
+		moveStraight(127);
+	}
+	baseStop();
+	wait1Msec(1000);
+
+	while(((abs(SensorValue[rightBackS]) + abs(SensorValue[leftBackS]))/2) < 370)
+	{
+		turnOnSpot(1,90);
+	}
+	baseStop()
+	
+	intake(-1);
+	wait1Msec(5000);
+	intake(0);
+	/*
+	while (SensorValue[bumper] == 0) {}
+	SensorValue[rightBackS] = 0;
+	while (abs(SensorValue[rightBackS]) < 70) moveStraight(-90);
+	baseStop();
+	// Deploy
+	deploy();
 	//Raise Lift
+	moveLiftAuto(1,3500);
+	intake(1);
+	moveLift(-1);
+	wait1Msec(300);
+	moveLift(0);
+	moveStraight(127);
+	wait1Msec(1000);
+	baseStop();
+	moveLiftAuto(-1,3450);
+	wait1Msec(500);
+	moveLiftAuto(1,3000);
+	SensorValue[rightBackS] = 0;
+	while (abs(SensorValue[rightBackS]) < 200)
+	{
+		moveStraight(-60);
+	}
+	baseStop();
+	SensorValue[rightBackS] = 0;
+	SensorValue[leftBackS] = 0;
+	while(((abs(SensorValue[rightBackS])+abs(SensorValue[leftBackS]))/2) < 550)
+	{
+		moveRightSide(-90);
+	}
+
+	SensorValue[rightBackS] = 0;
+	while (abs(SensorValue[rightBackS]) < 180)
+	{
+		moveStraight(70);
+	}
+	baseStop();
+
+	moveLiftAuto(-1,3550);
+	moveStraight(30);
+	moveLiftAuto(-1,3900);
+	while(abs(SensorValue[rightBackS]) < 200)
+	{
+		moveStraight(-60);
+	}
+	baseStop();
 	//Move Forward
 	//Move Backward
 	//Turn around
 	//Drop Lift
-	//Score Skyrise
+	//Score Skyrise*/
 }
 
 void blueOppoAuton()
 {
+	while (SensorValue[bumper] == 0) {}
+	SensorValue[rightBackS] = 0;
+	while (abs(SensorValue[rightBackS]) < 70) moveStraight(-90);
+	baseStop();
 	// Deploy
-	// Move Forward to low pole
+	deploy();
+
+	moveLiftAuto(1,3100);
+	moveLift(20);
+	SensorValue[rightBackS] = 0;
+	while (abs(SensorValue[rightBackS]) < 40) moveStraight(40);
+	baseStop();
+	/*
+	moveStraight(127);
+	wait1Msec(200);
+	moveStraight(-127);
+	wait1Msec(200);
+	*/
+	moveStraight(127);
+	wait1Msec(200);
+	intake(-1);
+	moveStraight(-127);
+	wait1Msec(200);
+	baseStop();
+
+	//intake(-1);
+	wait1Msec(2000);
+
+	moveStraight(50);
+	wait1Msec(100);
+	baseStop();
+
+	intake(1);
+	moveLift(-30);
+	wait1Msec(500);
+	intake(0);
+
+	liftStop();
+	moveStraight(-40);
+	wait1Msec(200);
+	baseStop();
+
+	SensorValue[leftBackS] = 0;
+	SensorValue[rightBackS] = 0;
+	while (((abs(SensorValue[leftBackS])+abs(SensorValue[rightBackS]))/2) < 450)
+	{
+		while (SensorValue[rightLiftS] < 4000)
+		{
+			moveLift(-70);
+			turnOnSpot(2,90);
+		}
+		liftStop();
+	}
+	baseStop();
+	intake(1);
+	moveStraight(70);
+	wait1Msec(1000);
 	// Raise Lift
 	// Output
 }
 
 void redSkyriseAuton()
 {
+	while (SensorValue[bumper] == 0) {}
+	deploy();
+	intake(1);
+	SensorValue[rightBackS] = 0;
+	while(abs(SensorValue[rightBackS]) < 200)
+	{
+		moveStraight(127);
+	}
+	baseStop();
+	wait1Msec(1000);
+
+	while(((abs(SensorValue[rightBackS]) + abs(SensorValue[leftBackS]))/2) < 370)
+	{
+		turnOnSpot(2,90);
+	}
+	baseStop()
+	
+	intake(-1);
+	wait1Msec(5000);
+	intake(0);
+	/*
+	SensorValue[rightBackS] = 0;
+	while (abs(SensorValue[rightBackS]) < 70) moveStraight(-90);
+	baseStop();
+	// Deploy
+	deploy();
+	//Raise Lift
+	moveLiftAuto(1,3500);
+	intake(1);
+	moveLift(-1);
+	wait1Msec(300);
+	moveLift(0);
+	moveStraight(127);
+	wait1Msec(1000);
+	baseStop();
+	moveLiftAuto(-1,3450);
+	wait1Msec(500);
+	moveLiftAuto(1,3000);
+	SensorValue[rightBackS] = 0;
+	while (abs(SensorValue[rightBackS]) < 200)
+	{
+	moveStraight(-60);
+	}
+	baseStop();
+	SensorValue[rightBackS] = 0;
+	SensorValue[leftBackS] = 0;
+	while(((abs(SensorValue[rightBackS])+abs(SensorValue[leftBackS]))/2) < 480)
+	{
+	moveLeftSide(-90);
+	}
+	moveLeftSide(1);
+	wait1Msec(50);
+	baseStop();
+
+	SensorValue[rightBackS] = 0;
+	while (abs(SensorValue[rightBackS]) < 180)
+	{
+	moveStraight(70);
+	}
+	baseStop();
+
+	moveLiftAuto(-1,3550);
+	moveStraight(30);
+	moveLiftAuto(-1,3900);
+	while(abs(SensorValue[rightBackS]) < 200)
+	{
+	moveStraight(-60);
+	}
+	baseStop();
+	//Move Forward
+	//Move Backward
+	//Turn around
+	//Drop Lift
+	//Score Skyrise*/
 }
 
 void redOppoAuton()
 {
+	while (SensorValue[bumper] == 0) {}
+	SensorValue[rightBackS] = 0;
+	while (abs(SensorValue[rightBackS]) < 70) moveStraight(-90);
+	baseStop();
+	// Deploy
+	deploy();
+
+	moveLiftAuto(1,3100);
+	moveLift(20);
+	SensorValue[rightBackS] = 0;
+	while (abs(SensorValue[rightBackS]) < 40) moveStraight(40);
+	baseStop();
+	/*
+	moveStraight(127);
+	wait1Msec(200);
+	moveStraight(-127);
+	wait1Msec(200);
+	*/
+	moveStraight(127);
+	wait1Msec(200);
+	intake(-1);
+	moveStraight(-127);
+	wait1Msec(200);
+	baseStop();
+
+	//intake(-1);
+	wait1Msec(2000);
+
+	moveStraight(50);
+	wait1Msec(100);
+	baseStop();
+
+	intake(1);
+	moveLift(-30);
+	wait1Msec(500);
+	intake(0);
+
+	liftStop();
+	moveStraight(-40);
+	wait1Msec(200);
+	baseStop();
+
+	SensorValue[leftBackS] = 0;
+	SensorValue[rightBackS] = 0;
+	while (((abs(SensorValue[leftBackS])+abs(SensorValue[rightBackS]))/2) < 450)
+	{
+		while (SensorValue[rightLiftS] < 4000)
+		{
+			moveLift(-70);
+			turnOnSpot(1,90);
+		}
+		liftStop();
+	}
+	baseStop();
+	intake(1);
+	moveStraight(70);
+	wait1Msec(1000);
+	// Raise Lift
+	// Output
 }
 
 void autonLocation()
 {
-	if (SensorValue[progSel] < 1024)
+	if (SensorValue[progSel] < 500)
 	{
-		//Blue Skyrise
+		blueSkyriseAuton();
 	}
-	else if (SensorValue[progSel] < 2048)
+	else if (SensorValue[progSel] < 2148)
 	{
-		//Blue Opposite
+		blueOppoAuton();
 	}
-	else if (SensorValue[progSel] < 3072)
+	else if (SensorValue[progSel] < 3300)
 	{
-		//Red Skyrise
+		redSkyriseAuton();
 	}
 	else
 	{
-		//Red Opposite
+		redOppoAuton();
 	}
 }
