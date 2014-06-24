@@ -95,7 +95,7 @@ void moveLiftAuto(int direction, int height)
 	if (direction == 1)
 	{
 		while (SensorValue[rightLiftS] > height)
-		{		
+		{
 			motor[leftArmTop] = 90;
 			motor[leftArmBottom] = 90;
 			motor[rightArmTop] = 90;
@@ -207,7 +207,7 @@ void deploy()
 }
 
 void blueSkyriseAuton()
-{	
+{
 	//while (SensorValue[bumper] == 0) {}
 	deploy();
 	intake(1);
@@ -219,15 +219,25 @@ void blueSkyriseAuton()
 	baseStop();
 	wait1Msec(1000);
 
-	while(((abs(SensorValue[rightBackS]) + abs(SensorValue[leftBackS]))/2) < 370)
+	SensorValue[rightBackS] = 0;
+	SensorValue[leftBackS] = 0;
+	while(((abs(SensorValue[rightBackS]) + abs(SensorValue[leftBackS]))/2) < 500)
 	{
 		turnOnSpot(1,90);
 	}
 	baseStop();
-	
+
 	intake(-1);
 	wait1Msec(5000);
 	intake(0);
+
+	SensorValue[rightBackS] = 0;
+	while(abs(SensorValue[rightBackS]) < 100)
+	{
+		moveStraight(-90);
+	}
+	baseStop();
+
 	/*
 	while (SensorValue[bumper] == 0) {}
 	SensorValue[rightBackS] = 0;
@@ -250,20 +260,20 @@ void blueSkyriseAuton()
 	SensorValue[rightBackS] = 0;
 	while (abs(SensorValue[rightBackS]) < 200)
 	{
-		moveStraight(-60);
+	moveStraight(-60);
 	}
 	baseStop();
 	SensorValue[rightBackS] = 0;
 	SensorValue[leftBackS] = 0;
 	while(((abs(SensorValue[rightBackS])+abs(SensorValue[leftBackS]))/2) < 550)
 	{
-		moveRightSide(-90);
+	moveRightSide(-90);
 	}
 
 	SensorValue[rightBackS] = 0;
 	while (abs(SensorValue[rightBackS]) < 180)
 	{
-		moveStraight(70);
+	moveStraight(70);
 	}
 	baseStop();
 
@@ -272,7 +282,7 @@ void blueSkyriseAuton()
 	moveLiftAuto(-1,3900);
 	while(abs(SensorValue[rightBackS]) < 200)
 	{
-		moveStraight(-60);
+	moveStraight(-60);
 	}
 	baseStop();
 	//Move Forward
@@ -341,6 +351,7 @@ void blueOppoAuton()
 	intake(1);
 	moveStraight(70);
 	wait1Msec(1000);
+	baseStop();
 	// Raise Lift
 	// Output
 }
@@ -358,15 +369,25 @@ void redSkyriseAuton()
 	baseStop();
 	wait1Msec(1000);
 
-	while(((abs(SensorValue[rightBackS]) + abs(SensorValue[leftBackS]))/2) < 370)
+	SensorValue[rightBackS] = 0;
+	SensorValue[leftBackS] = 0;
+	while(((abs(SensorValue[rightBackS]) + abs(SensorValue[leftBackS]))/2) < 500)
 	{
-		turnOnSpot(2,90);
+		turnOnSpot(1,90);
 	}
 	baseStop();
-	
+
 	intake(-1);
 	wait1Msec(5000);
 	intake(0);
+
+	SensorValue[rightBackS] = 0;
+	while(abs(SensorValue[rightBackS]) < 100)
+	{
+		moveStraight(-90);
+	}
+	baseStop();
+
 	/*
 	SensorValue[rightBackS] = 0;
 	while (abs(SensorValue[rightBackS]) < 70) moveStraight(-90);
@@ -482,6 +503,7 @@ void redOppoAuton()
 	intake(1);
 	moveStraight(70);
 	wait1Msec(1000);
+	baseStop();
 	// Raise Lift
 	// Output
 }
@@ -556,6 +578,8 @@ task usercontrol()
 {
 	// User control code here, inside the loop
 
+	bool arcade = false;
+
 	while (true)
 	{
 		// This is the main execution loop for the user control program. Each time through the loop
@@ -564,19 +588,31 @@ task usercontrol()
 		// .....................................................................................
 		// Insert user code here. This is where you use the joystick values to update your motors, etc.
 		// .....................................................................................
-		/*
-		motor[leftBack] = cubicMap(vexRT[Ch3] + vexRT[Ch1]);
-		motor[leftFront] = cubicMap(vexRT[Ch3] + vexRT[Ch1]);
-		motor[rightBack] = cubicMap(vexRT[Ch3] - vexRT[Ch1]);
-		motor[rightFront] = cubicMap(vexRT[Ch3] - vexRT[Ch1]);
-		*/
 
-		motor[leftBack] = vexRT[Ch3];
-		motor[leftFront] = vexRT[Ch3];
-		motor[rightBack] = vexRT[Ch2];
-		motor[rightFront] = vexRT[Ch2];
+		if (vexRT[Btn8U] == 1)
+		{
+			arcade = true;
+		}
+		else if (vexRT[Btn8D] == 1)
+		{
+			arcade = false;
+		}
 
-		if (abs(vexRT[Ch2Xmtr2]) > 5)
+		if (arcade == true)
+		{
+			motor[leftBack] = cubicMap(vexRT[Ch3] + vexRT[Ch1]);
+			motor[leftFront] = cubicMap(vexRT[Ch3] + vexRT[Ch1]);
+			motor[rightBack] = cubicMap(vexRT[Ch3] - vexRT[Ch1]);
+			motor[rightFront] = cubicMap(vexRT[Ch3] - vexRT[Ch1]);
+		}
+		else
+		{
+			motor[leftBack] = vexRT[Ch3];
+			motor[leftFront] = vexRT[Ch3];
+			motor[rightBack] = vexRT[Ch2];
+			motor[rightFront] = vexRT[Ch2];
+		}
+		if (abs(vexRT[Ch2Xmtr2]) > 10)
 		{
 			motor[leftArmBottom] = cubicMap(vexRT[Ch2Xmtr2]);
 			motor[leftArmTop] = cubicMap(vexRT[Ch2Xmtr2]);
@@ -605,7 +641,7 @@ task usercontrol()
 			motor[rightArmTop] = 0;
 		}
 
-		if (abs(vexRT[Ch3Xmtr2]) > 5)
+		if (abs(vexRT[Ch3Xmtr2]) > 10)
 		{
 			motor[intakeLeft] = vexRT[Ch3Xmtr2];
 			motor[intakeRight] = vexRT[Ch3Xmtr2];
