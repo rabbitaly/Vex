@@ -2,7 +2,7 @@
 #pragma config(Motor,  port2,           backLeftTop,   tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port3,           frontLeftBottom, tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port4,           frontLeftTop,  tmotorVex393_MC29, openLoop)
-#pragma config(Motor,  port5,           leftArm,       tmotorVex393_MC29, openLoop)
+#pragma config(Motor,  port5,           leftArm,       tmotorVex393_MC29, openLoop, reversed)
 #pragma config(Motor,  port6,           rightArm,      tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port7,           frontRightTop, tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port8,           frontRightBottom, tmotorVex393_MC29, openLoop)
@@ -14,16 +14,16 @@ task main()
 {
 	while(true)
 	{
-		motor[backLeftBottom] = vexRT[Ch3] + vexRT[Ch1];
-		motor[backLeftTop] = vexRT[Ch3] + vexRT[Ch1];
-		motor[frontLeftBottom] = vexRT[Ch3] + vexRT[Ch1];
-		motor[frontLeftTop] = vexRT[Ch3] + vexRT[Ch1];
-		
-		motor[backRightBottom] = vexRT[Ch3] - vexRT[Ch1];
-		motor[backRightTop] = vexRT[Ch3] - vexRT[Ch1];
-		motor[frontRightBottom] = vexRT[Ch3] - vexRT[Ch1];
-		motor[frontRightTop] = vexRT[Ch3] - vexRT[Ch1];
-		
+		motor[backLeftBottom] = vexRT[Ch1] + vexRT[Ch3];
+		motor[backLeftTop] = vexRT[Ch1] + vexRT[Ch3];
+		motor[frontLeftBottom] = vexRT[Ch1] + vexRT[Ch3];
+		motor[frontLeftTop] = vexRT[Ch1] + vexRT[Ch3];
+
+		motor[backRightBottom] = vexRT[Ch1] - vexRT[Ch3];
+		motor[backRightTop] = vexRT[Ch1] - vexRT[Ch3];
+		motor[frontRightBottom] = vexRT[Ch1] - vexRT[Ch3];
+		motor[frontRightTop] = vexRT[Ch1] - vexRT[Ch3];
+
 		if (vexRT[Btn6U] == 1)
 		{
 			motor[leftArm] = 127;
